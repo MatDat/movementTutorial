@@ -4,4 +4,10 @@ export default class View {
   testView() {
     console.log("View be running");
   }
+
+  displayPlayerPosition(playerPosition) {
+    const visualPlayer = document.querySelector("#player");
+    visualPlayer.style.translate = `${playerPosition.x}px 
+        ${playerPosition.y}px`;
+  }
 }

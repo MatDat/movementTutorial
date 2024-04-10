@@ -11,6 +11,7 @@ class Controller {
     console.log("JS be running");
     this.model.testModel();
     this.view.testView();
+    this.view.displayPlayerPosition(this.model.player);
   }
 }
 

@@ -27,7 +27,9 @@ h1 {
 }
 
 #player {
-  width: 16px;
-  height: 20px;
+  width: 64px;
+  aspect-ratio: 16/20;
   background-image: url("images/Characters/Character\ 11.png");
+  background-size: 400% 400%;
+  image-rendering: pixelated;
 }
