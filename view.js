@@ -1,13 +1,14 @@
 export default class View {
-  constructor() {}
+  constructor() {
+    this.displayPlayerPosition = this.displayPlayerPosition;
+  }
 
   testView() {
     console.log("View be running");
   }
 
-  displayPlayerPosition(playerPosition) {
+  displayPlayerPosition(player) {
     const visualPlayer = document.querySelector("#player");
-    visualPlayer.style.translate = `${playerPosition.x}px 
-        ${playerPosition.y}px`;
+    visualPlayer.style.translate = `${player.x}px, ${player.y}px`;
   }
 }
