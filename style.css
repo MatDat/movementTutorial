@@ -33,3 +33,79 @@ h1 {
   background-size: 400% 400%;
   image-rendering: pixelated;
 }
+
+#player.animate {
+  animation-duration: 1s;
+  animation-timing-function: steps(4);
+  animation-iteration-count: infinite;
+}
+
+#player.down {
+  background-position: 0% 0%;
+  animation-name: down;
+}
+
+#player.up {
+  background-position: 0% 0%;
+  animation-name: up;
+}
+
+#player.left {
+  background-position: 0% 0%;
+  animation-name: left;
+}
+
+#player.right {
+  background-position: 0% 0%;
+  animation-name: right;
+}
+
+#player.notMoving {
+  background-position: 0% 0%;
+  animation-name: notMoving;
+}
+
+@keyframes down {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: -400% 0%;
+  }
+}
+
+@keyframes up {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: +400% 100%;
+  }
+}
+
+@keyframes left {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: 0% -400%;
+  }
+}
+
+@keyframes right {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: -400% 300%;
+  }
+}
+
+@keyframes notMoving {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: 0% 0%;
+  }
+}
