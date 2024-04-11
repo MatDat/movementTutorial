@@ -35,7 +35,7 @@ h1 {
 }
 
 #player.animate {
-  animation-duration: 1s;
+  animation-duration: 0.7s;
   animation-timing-function: steps(4);
   animation-iteration-count: infinite;
 }
@@ -76,28 +76,28 @@ h1 {
 
 @keyframes up {
   from {
-    background-position: 0% 0%;
+    background-position: 0% 300%;
   }
   to {
-    background-position: +400% 100%;
+    background-position: -400% 300%;
   }
 }
 
 @keyframes left {
   from {
-    background-position: 0% 0%;
+    background-position: 0% 200%;
   }
   to {
-    background-position: 0% -400%;
+    background-position: -400% 200%;
   }
 }
 
 @keyframes right {
   from {
-    background-position: 0% 0%;
+    background-position: 0% 100%;
   }
   to {
-    background-position: -400% 300%;
+    background-position: -400% 100%;
   }
 }
 

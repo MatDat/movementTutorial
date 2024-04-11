@@ -3,7 +3,7 @@ export default class Model {
     this.player = {
       x: 0,
       y: 0,
-      speed: 120,
+      speed: 200,
       isMoving: false,
       direction: undefined,
     };
@@ -50,7 +50,7 @@ export default class Model {
   }
 
   canMoveTo(pos) {
-    if (pos.x < 0 || pos.x > 450 || pos.y < 0 || pos.y > 435) {
+    if (pos.x < 0 || pos.x > 453 || pos.y < 0 || pos.y > 433) {
       return false;
     } else {
       return true;
