@@ -2,9 +2,9 @@ export default class Model {
   constructor(controller) {
     this.player = {
       x: 0,
-      y: 480,
+      y: 420,
       regX: 15,
-      regY: 28,
+      regY: 32,
       hitbox: {
         x: 1,
         y: 2,
@@ -35,7 +35,7 @@ export default class Model {
 
     this.GRID_HEIGHT = this.tiles.length;
     this.GRID_WIDTH = this.tiles[0].length;
-    this.TILE_SIZE = 64;
+    this.TILE_SIZE = 56;
 
     this.controller = controller;
   }
@@ -133,12 +133,4 @@ export default class Model {
     }
     return true;
   }
-
-  // canMoveTo(pos) {
-  //   if (pos.x < 0 || pos.x > 452 || pos.y < 0 || pos.y > 432) {
-  //     return false;
-  //   } else {
-  //     return true;
-  //   }
-  // }
 }

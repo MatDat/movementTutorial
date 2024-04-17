@@ -97,14 +97,17 @@ class Controller {
   //----------------------------------------------------------------------------------------------------
 
   showdebugging() {
+    //Yellow outline
     this.showDebugTileUnderPlayer();
+    //Red outline
     this.showDebugPlayerRect();
+    //Blue dot
     this.showDebugPlayerRegistrationPoint();
-    this.highlightTile(this.model.coord);
   }
 
   lastPlayerCoord = { row: 0, col: 0 };
 
+  //Yellow outline
   showDebugTileUnderPlayer() {
     const coord = this.model.coordFromPos(this.model.player);
 
@@ -120,6 +123,7 @@ class Controller {
     this.lastPlayerCoord = coord;
   }
 
+  //Red outline
   showDebugPlayerRect() {
     const visualPlayer = document.querySelector("#player");
 
@@ -128,6 +132,7 @@ class Controller {
     }
   }
 
+  //Blue dot
   showDebugPlayerRegistrationPoint() {
     const visualPlayer = document.querySelector("#player");
 
@@ -138,7 +143,6 @@ class Controller {
     visualPlayer.style.setProperty("--regY", this.model.player.regY + "px");
   }
 
-  //FIXME Stuck highlight on tile 0,0
   highlightTile({ row, col }) {
     const visualTiles = document.querySelectorAll("#background .tile");
     const visualTile = visualTiles[row * this.model.GRID_WIDTH + col];
