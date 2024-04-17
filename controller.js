@@ -9,6 +9,15 @@ class Controller {
     window.updatePlayerPosition = (player) => this.updatePlayerPosition(player);
   }
 
+  direction = "left";
+
+  controls = {
+    left: false,
+    right: false,
+    up: false,
+    down: false,
+  };
+
   setup() {
     console.log("JS be running");
     this.model.testModel();
@@ -18,6 +27,17 @@ class Controller {
     document.addEventListener("keyup", this.keyUp);
 
     requestAnimationFrame(() => this.tick());
+
+    this.view.createTiles(
+      this.model.TILE_SIZE,
+      this.model.GRID_HEIGHT,
+      this.model.GRID_WIDTH
+    );
+    this.view.displayTiles(
+      this.model.tiles,
+      this.model.GRID_HEIGHT,
+      this.model.GRID_WIDTH
+    );
   }
 
   lastTimeStamp = 0;
@@ -33,16 +53,9 @@ class Controller {
 
     this.updatePlayerPosition(this.model.player);
     this.view.displayPlayerAnimation(this.model.player);
+
+    this.showdebugging();
   }
-
-  direction = "left";
-
-  controls = {
-    left: false,
-    right: false,
-    up: false,
-    down: false,
-  };
 
   keyDown = (event) => {
     switch (event.key) {
@@ -75,14 +88,69 @@ class Controller {
       case "ArrowDown":
         this.controls.down = false;
         break;
-
-      default:
-        break;
     }
   };
 
   updatePlayerPosition(player) {
     this.view.displayPlayerPosition(player);
+  }
+  //----------------------------------------------------------------------------------------------------
+
+  showdebugging() {
+    this.showDebugTileUnderPlayer();
+    this.showDebugPlayerRect();
+    this.showDebugPlayerRegistrationPoint();
+    this.highlightTile(this.model.coord);
+  }
+
+  lastPlayerCoord = { row: 0, col: 0 };
+
+  showDebugTileUnderPlayer() {
+    const coord = this.model.coordFromPos(this.model.player);
+
+    if (
+      coord &&
+      (coord.row !== this.lastPlayerCoord.row ||
+        coord.col !== this.lastPlayerCoord.col)
+    ) {
+      this.unhighlightTile(this.lastPlayerCoord);
+      this.highlightTile(coord);
+    }
+
+    this.lastPlayerCoord = coord;
+  }
+
+  showDebugPlayerRect() {
+    const visualPlayer = document.querySelector("#player");
+
+    if (!visualPlayer.classList.contains("show-rect")) {
+      visualPlayer.classList.add("show-rect");
+    }
+  }
+
+  showDebugPlayerRegistrationPoint() {
+    const visualPlayer = document.querySelector("#player");
+
+    if (!visualPlayer.classList.contains("show-reg-point")) {
+      visualPlayer.classList.add("show-reg-point");
+    }
+    visualPlayer.style.setProperty("--regX", this.model.player.regX + "px");
+    visualPlayer.style.setProperty("--regY", this.model.player.regY + "px");
+  }
+
+  //FIXME Stuck highlight on tile 0,0
+  highlightTile({ row, col }) {
+    const visualTiles = document.querySelectorAll("#background .tile");
+    const visualTile = visualTiles[row * this.model.GRID_WIDTH + col];
+
+    visualTile.classList.add("highlight");
+  }
+
+  unhighlightTile({ row, col }) {
+    const visualTiles = document.querySelectorAll("#background .tile");
+    const visualTile = visualTiles[row * this.model.GRID_WIDTH + col];
+
+    visualTile.classList.remove("highlight");
   }
 }
 

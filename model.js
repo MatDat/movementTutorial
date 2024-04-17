@@ -2,12 +2,63 @@ export default class Model {
   constructor(controller) {
     this.player = {
       x: 0,
-      y: 0,
+      y: 480,
+      regX: 15,
+      regY: 28,
+      hitbox: {
+        x: 1,
+        y: 2,
+        width: 3,
+        height: 4,
+      },
       speed: 200,
       isMoving: false,
       direction: undefined,
     };
+
+    this.tiles = [
+      [3, 3, 3, 3, 3, 3, 3, 3, 6, 10, 1, 7, 0, 0, 0, 0, 0, 8, 8],
+      [3, 4, 4, 4, 4, 4, 4, 3, 6, 0, 1, 7, 0, 7, 7, 8, 8, 8, 8],
+      [3, 4, 4, 4, 3, 3, 3, 3, 6, 0, 0, 0, 0, 0, 0, 7, 8, 8, 8],
+      [3, 4, 4, 4, 3, 6, 6, 6, 6, 6, 6, 6, 6, 6, 0, 0, 7, 7, 7],
+      [3, 3, 5, 3, 3, 6, 3, 3, 3, 3, 3, 0, 0, 6, 0, 0, 0, 10, 10],
+      [7, 0, 6, 0, 10, 6, 5, 4, 4, 4, 3, 10, 0, 6, 6, 6, 6, 6, 6],
+      [7, 0, 6, 0, 7, 6, 3, 3, 3, 3, 3, 10, 0, 0, 7, 7, 7, 7, 7],
+      [6, 6, 6, 6, 6, 6, 10, 0, 0, 0, 0, 3, 3, 3, 3, 7, 0, 0, 7],
+      [10, 10, 0, 0, 0, 6, 9, 10, 0, 0, 0, 3, 4, 4, 3, 7, 0, 8, 8],
+      [7, 7, 7, 10, 10, 6, 6, 6, 6, 6, 6, 3, 4, 4, 3, 10, 0, 7, 7],
+      [7, 7, 7, 10, 10, 0, 0, 0, 0, 0, 6, 3, 5, 3, 3, 10, 0, 10, 10],
+      [1, 1, 1, 1, 1, 1, 1, 1, 10, 0, 6, 6, 6, 6, 6, 6, 6, 6, 6],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 6, 0, 0, 0, 7, 7, 7],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 10, 10, 6, 7, 7, 7, 8, 8, 8],
+    ];
+
+    this.GRID_HEIGHT = this.tiles.length;
+    this.GRID_WIDTH = this.tiles[0].length;
+    this.TILE_SIZE = 64;
+
     this.controller = controller;
+  }
+  coord = {
+    row: 0,
+    col: 0,
+  };
+
+  coordFromPos({ x, y }) {
+    const row = Math.floor(y / this.TILE_SIZE);
+    const col = Math.floor(x / this.TILE_SIZE);
+    const coord = { row, col };
+    return coord;
+  }
+
+  posFromCoord({ row, col }) {}
+
+  getTilesAtCoord({ row, col }) {
+    // const row = coord.row;
+    // const col = coord.col;
+    // const { row, col } = coord;
+
+    return this.tiles[row][col];
   }
 
   testModel() {
@@ -27,7 +78,8 @@ export default class Model {
       this.player.isMoving = true;
       this.player.direction = "left";
       newPos.x -= this.player.speed * deltaTime;
-    } else if (controls.right) {
+    }
+    if (controls.right) {
       this.player.isMoving = true;
       this.player.direction = "right";
       newPos.x += this.player.speed * deltaTime;
@@ -37,7 +89,8 @@ export default class Model {
       this.player.isMoving = true;
       this.player.direction = "up";
       newPos.y -= this.player.speed * deltaTime;
-    } else if (controls.down) {
+    }
+    if (controls.down) {
       this.player.isMoving = true;
       this.player.direction = "down";
       newPos.y += this.player.speed * deltaTime;
@@ -50,10 +103,42 @@ export default class Model {
   }
 
   canMoveTo(pos) {
-    if (pos.x < 0 || pos.x > 453 || pos.y < 0 || pos.y > 433) {
+    const { row, col } = this.coordFromPos(pos);
+
+    if (
+      row < 0 ||
+      row >= this.GRID_HEIGHT ||
+      col < 0 ||
+      col >= this.GRID_WIDTH
+    ) {
       return false;
-    } else {
-      return true;
     }
+
+    const tileType = this.getTilesAtCoord({ row, col });
+    switch (tileType) {
+      case 6:
+      case 10:
+      case 5:
+      case 0:
+      case 4:
+        return true;
+      case 3:
+      case 1:
+      case 8:
+      case 7:
+      case 9:
+        return false;
+      default:
+        break;
+    }
+    return true;
   }
+
+  // canMoveTo(pos) {
+  //   if (pos.x < 0 || pos.x > 452 || pos.y < 0 || pos.y > 432) {
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // }
 }
