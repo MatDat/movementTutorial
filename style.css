@@ -77,10 +77,29 @@ h1 {
 
 #items {
   grid-area: 1/1;
+  display: grid;
+  position: relative;
+  grid-template-columns: repeat(var(--GRID_WIDTH), var(--TILE_SIZE));
+  grid-template-rows: repeat(var(--GRID_HEIGHT), var(--TILE_SIZE));
 }
+
+.item {
+  width: var(--TILE_SIZE);
+  aspect-ratio: 1 / 1;
+  background-size: 100%;
+  image-rendering: pixelated;
+
+  grid-area: calc(var(--row) + 1) / calc(var(--col) + 1);
+}
+
+.item.gold {
+  background-image: url(images/items/gold.png);
+}
+
 #characters {
   grid-area: 1/1;
 }
+
 #player {
   width: 32px;
   aspect-ratio: 16/20;
@@ -153,6 +172,10 @@ h1 {
     background-position: 0% 0%;
   }
 }
+
+.show-hitbox {
+  outline: 2px solid black;
+}
 .highlight {
   outline: 2px dashed yellow;
   translate: 0 0;
@@ -160,6 +183,7 @@ h1 {
 .show-rect {
   outline: 2px solid red;
 }
+
 .show-reg-point::before {
   content: "";
   position: absolute;

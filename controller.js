@@ -28,6 +28,12 @@ class Controller {
 
     requestAnimationFrame(() => this.tick());
 
+    this.view.createItems(
+      this.model.itemsGrid,
+      this.model.GRID_HEIGHT,
+      this.model.GRID_WIDTH
+    );
+
     this.view.createTiles(
       this.model.TILE_SIZE,
       this.model.GRID_HEIGHT,
@@ -103,6 +109,8 @@ class Controller {
     this.showDebugPlayerRect();
     //Blue dot
     this.showDebugPlayerRegistrationPoint();
+    //Black outline
+    this.hitbox();
   }
 
   lastPlayerCoord = { row: 0, col: 0 };
@@ -129,6 +137,14 @@ class Controller {
 
     if (!visualPlayer.classList.contains("show-rect")) {
       visualPlayer.classList.add("show-rect");
+    }
+  }
+  //Black outline
+  hitbox() {
+    const visualPlayer = document.querySelector("#player");
+
+    if (!visualPlayer.classList.contains("show-hitbox")) {
+      visualPlayer.classList.add("show-hitbox");
     }
   }
 

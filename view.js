@@ -7,7 +7,27 @@ export default class View {
     console.log("View be running");
   }
 
+  createItems(itemsGrid, GRID_HEIGHT, GRID_WIDTH) {
+    const visualItems = document.querySelector("#items");
+
+    for (let row = 0; row < GRID_HEIGHT; row++) {
+      for (let col = 0; col < GRID_WIDTH; col++) {
+        const modelItem = itemsGrid[row][col];
+        if (modelItem !== 0) {
+          const visualItem = document.createElement("div");
+          visualItem.classList.add("item");
+          visualItem.classList.add("gold");
+          visualItem.style.setProperty("--row", row);
+          visualItem.style.setProperty("--col", col);
+          visualItems.append(visualItem);
+        }
+      }
+    }
+  }
+
   createTiles(TILE_SIZE, GRID_HEIGHT, GRID_WIDTH) {
+    const gamefield = document.querySelector("#gamefield");
+
     const background = document.querySelector("#background");
 
     for (let row = 0; row < GRID_HEIGHT; row++) {
@@ -17,9 +37,9 @@ export default class View {
         background.appendChild(tile);
       }
     }
-    background.style.setProperty("--GRID_WIDTH", GRID_WIDTH);
-    background.style.setProperty("--GRID_HEIGHT", GRID_HEIGHT);
-    background.style.setProperty("--TILE_SIZE", TILE_SIZE + "px");
+    gamefield.style.setProperty("--GRID_WIDTH", GRID_WIDTH);
+    gamefield.style.setProperty("--GRID_HEIGHT", GRID_HEIGHT);
+    gamefield.style.setProperty("--TILE_SIZE", TILE_SIZE + "px");
   }
 
   displayTiles(tiles, GRID_HEIGHT, GRID_WIDTH) {
