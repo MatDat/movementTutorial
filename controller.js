@@ -124,22 +124,34 @@ class Controller {
     this.hitbox();
   }
 
-  lastPlayerCoord = { row: 0, col: 0 };
+  lastPlayerCoords = [];
+
+  // //Yellow outline OLD version
+  // showDebugTileUnderPlayer() {
+  //   const coord = this.model.coordFromPos(this.model.player);
+
+  //   if (
+  //     coord &&
+  //     (coord.row !== this.lastPlayerCoord.row ||
+  //       coord.col !== this.lastPlayerCoord.col)
+  //   ) {
+  //     this.unhighlightTile(this.lastPlayerCoord);
+  //     this.highlightTile(coord);
+  //   }
+
+  //   this.lastPlayerCoord = coord;
+  // }
 
   //Yellow outline
   showDebugTileUnderPlayer() {
-    const coord = this.model.coordFromPos(this.model.player);
+    this.lastPlayerCoords.forEach(this.unhighlightTile);
 
-    if (
-      coord &&
-      (coord.row !== this.lastPlayerCoord.row ||
-        coord.col !== this.lastPlayerCoord.col)
-    ) {
-      this.unhighlightTile(this.lastPlayerCoord);
-      this.highlightTile(coord);
-    }
+    const tileCoords = this.model.getTilesUnderPlayer(this.model.player);
+    tileCoords.forEach(this.highlightTile);
 
-    this.lastPlayerCoord = coord;
+    this.lastPlayerCoords = tileCoords;
+
+    // this.lastPlayerCoord = coord;
   }
 
   //Red outline
@@ -159,19 +171,19 @@ class Controller {
     }
     visualPlayer.style.setProperty(
       "--hitboxX",
-      this.model.player.hitbox.hitboxX + "px"
+      this.model.player.hitbox.x + "px"
     );
     visualPlayer.style.setProperty(
       "--hitboxY",
-      this.model.player.hitbox.hitboxY + "px"
+      this.model.player.hitbox.y + "px"
     );
     visualPlayer.style.setProperty(
       "--hitboxWidth",
-      this.model.player.hitbox.hitboxWidth + "px"
+      this.model.player.hitbox.w + "px"
     );
     visualPlayer.style.setProperty(
       "--hitboxHeight",
-      this.model.player.hitbox.hitboxHeight + "px"
+      this.model.player.hitbox.h + "px"
     );
   }
 

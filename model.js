@@ -2,15 +2,15 @@ export default class Model {
   constructor(controller) {
     this.player = {
       isTaking: false,
-      x: 0,
-      y: 420,
+      x: 27,
+      y: 425,
       regX: 15,
       regY: 32,
       hitbox: {
-        hitboxX: 8,
-        hitboxY: 7,
-        hitboxWidth: 16,
-        hitboxHeight: 32,
+        x: 8,
+        y: 7,
+        w: 16,
+        h: 32,
       },
       speed: 200,
       isMoving: false,
@@ -81,17 +81,28 @@ export default class Model {
     return this.tiles[row][col];
   }
 
-  getTilesUnderPlayer(player) {
-    const tiles = [];
+  getTilesUnderPlayer(player, newPos = { x: player.x, y: player.y }) {
+    const tileCoords = [];
 
-    const topLeft = {
-      x: player.x - player.regX + player.hitbox.x,
-      y: player.y,
-    };
+    const topLeft = this.coordFromPos({
+      x: newPos.x - player.regX + player.hitbox.x,
+      y: newPos.y - player.regY + player.hitbox.y,
+    });
+
     const topRight = {
-      x: player.x - player.regX + player.hitbox.x + player.hitbox.x,
-      y: player.y,
+      x: newPos.x - player.regX + player.hitbox.x + player.hitbox.x,
+      y: newPos.y - player.regY + player.hitbox.x,
     };
+
+    // const bottomLeft = { x: , y };
+    // const bottomRight = { x, y };
+
+    const topRightCoords = this.coordFromPos(topRight);
+
+    tileCoords.push(topLeft);
+    tileCoords.push(topRightCoords);
+
+    return tileCoords;
   }
 
   testModel() {
@@ -129,7 +140,7 @@ export default class Model {
       newPos.y += this.player.speed * deltaTime;
     }
 
-    if (this.canMoveTo(newPos)) {
+    if (this.canMovePlayerToPos()) {
       this.player.x = newPos.x;
       this.player.y = newPos.y;
     }
@@ -172,8 +183,14 @@ export default class Model {
     }
   }
 
-  canMoveTo(pos) {
-    const { row, col } = this.coordFromPos(pos);
+  canMovePlayerToPos(player, pos) {
+    const coords = this.getItemsUnderPlayer(player, pos);
+
+    return coords.every(this.canMoveTo);
+  }
+
+  canMoveTo({ row, col }) {
+    // const { row, col } = this.coordFromPos(pos);
 
     if (
       row < 0 ||
