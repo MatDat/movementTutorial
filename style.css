@@ -92,6 +92,11 @@ h1 {
   grid-area: calc(var(--row) + 1) / calc(var(--col) + 1);
 }
 
+.take {
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
 .item.gold {
   background-image: url(images/items/gold.png);
 }

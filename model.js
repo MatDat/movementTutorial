@@ -1,6 +1,7 @@
 export default class Model {
   constructor(controller) {
     this.player = {
+      isTaking: false,
       x: 0,
       y: 420,
       regX: 15,
@@ -53,6 +54,8 @@ export default class Model {
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     ];
+
+    this.visualItemsGrid = [];
 
     this.controller = controller;
   }
@@ -134,8 +137,9 @@ export default class Model {
 
   checkForItems() {
     const items = this.getItemsUnderPlayer();
-    if (items.length > 0) {
-      console.log(`There are ${items.length} items under the player!`);
+    if (items.length > 0 && this.controls.use && !this.player.isTaking) {
+      this.player.isTaking = true;
+      items.forEach(this.takeItem);
     }
   }
 
@@ -151,6 +155,21 @@ export default class Model {
       }
     }
     return items;
+  }
+
+  takeItem(coords) {
+    //Find item
+    const itemValue = this.itemsGrid[coords.row][coords.col];
+    //Continue only if there is an item
+    if (itemValue !== 0) {
+      //remove item
+      this.itemsGrid[coords.row][coords.col] = 0;
+      //Find visual item
+      const visualItem = this.visualItemsGriditemsGrid[coords.row][coords.col];
+
+      visualItem.classList.add("take");
+      // document.querySelector("#sound_coins").play();
+    }
   }
 
   canMoveTo(pos) {

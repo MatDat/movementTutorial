@@ -7,10 +7,11 @@ export default class View {
     console.log("View be running");
   }
 
-  createItems(itemsGrid, GRID_HEIGHT, GRID_WIDTH) {
+  createItems(itemsGrid, visualItemsGrid, GRID_HEIGHT, GRID_WIDTH) {
     const visualItems = document.querySelector("#items");
 
     for (let row = 0; row < GRID_HEIGHT; row++) {
+      visualItemsGrid[row] = [];
       for (let col = 0; col < GRID_WIDTH; col++) {
         const modelItem = itemsGrid[row][col];
         if (modelItem !== 0) {
@@ -20,6 +21,8 @@ export default class View {
           visualItem.style.setProperty("--row", row);
           visualItem.style.setProperty("--col", col);
           visualItems.append(visualItem);
+
+          visualItemsGrid[row][col] = visualItem;
         }
       }
     }

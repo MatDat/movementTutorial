@@ -6,6 +6,7 @@ class Controller {
     this.model = new Model(this);
     this.view = new View(this);
     window.model = this.model;
+    window.view = this.view;
     window.updatePlayerPosition = (player) => this.updatePlayerPosition(player);
   }
 
@@ -16,6 +17,7 @@ class Controller {
     right: false,
     up: false,
     down: false,
+    use: false,
   };
 
   setup() {
@@ -30,6 +32,7 @@ class Controller {
 
     this.view.createItems(
       this.model.itemsGrid,
+      this.model.visualItemsGrid,
       this.model.GRID_HEIGHT,
       this.model.GRID_WIDTH
     );
@@ -57,7 +60,7 @@ class Controller {
 
     this.model.movePlayer(deltaTime);
 
-    // this.model.checkForItems();
+    // this.model.checkFortems();
 
     this.updatePlayerPosition(this.model.player);
     this.view.displayPlayerAnimation(this.model.player);
@@ -79,6 +82,9 @@ class Controller {
       case "ArrowDown":
         this.controls.down = true;
         break;
+      case "e":
+        this.controls.use = true;
+        break;
     }
   };
 
@@ -95,6 +101,9 @@ class Controller {
         break;
       case "ArrowDown":
         this.controls.down = false;
+        break;
+      case "e":
+        this.controls.use = false;
         break;
     }
   };
