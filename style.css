@@ -173,13 +173,22 @@ h1 {
   }
 }
 
-.show-hitbox {
-  outline: 2px solid black;
+.show-hitbox::after {
+  content: "";
+  position: absolute;
+
+  width: var(--hitboxWidth);
+  height: var(--hitboxHeight);
+  translate: var(--hitboxX) var(--hitboxY);
+
+  outline: 2px solid white;
 }
+
 .highlight {
   outline: 2px dashed yellow;
   translate: 0 0;
 }
+
 .show-rect {
   outline: 2px solid red;
 }

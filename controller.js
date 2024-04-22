@@ -57,6 +57,8 @@ class Controller {
 
     this.model.movePlayer(deltaTime);
 
+    // this.model.checkForItems();
+
     this.updatePlayerPosition(this.model.player);
     this.view.displayPlayerAnimation(this.model.player);
 
@@ -109,7 +111,7 @@ class Controller {
     this.showDebugPlayerRect();
     //Blue dot
     this.showDebugPlayerRegistrationPoint();
-    //Black outline
+    //White outline
     this.hitbox();
   }
 
@@ -139,13 +141,29 @@ class Controller {
       visualPlayer.classList.add("show-rect");
     }
   }
-  //Black outline
+  //White outline
   hitbox() {
     const visualPlayer = document.querySelector("#player");
 
     if (!visualPlayer.classList.contains("show-hitbox")) {
       visualPlayer.classList.add("show-hitbox");
     }
+    visualPlayer.style.setProperty(
+      "--hitboxX",
+      this.model.player.hitbox.hitboxX + "px"
+    );
+    visualPlayer.style.setProperty(
+      "--hitboxY",
+      this.model.player.hitbox.hitboxY + "px"
+    );
+    visualPlayer.style.setProperty(
+      "--hitboxWidth",
+      this.model.player.hitbox.hitboxWidth + "px"
+    );
+    visualPlayer.style.setProperty(
+      "--hitboxHeight",
+      this.model.player.hitbox.hitboxHeight + "px"
+    );
   }
 
   //Blue dot

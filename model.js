@@ -6,10 +6,10 @@ export default class Model {
       regX: 15,
       regY: 32,
       hitbox: {
-        x: 4,
-        y: 7,
-        width: 12,
-        height: 17,
+        hitboxX: 8,
+        hitboxY: 7,
+        hitboxWidth: 16,
+        hitboxHeight: 32,
       },
       speed: 200,
       isMoving: false,
@@ -78,6 +78,19 @@ export default class Model {
     return this.tiles[row][col];
   }
 
+  getTilesUnderPlayer(player) {
+    const tiles = [];
+
+    const topLeft = {
+      x: player.x - player.regX + player.hitbox.x,
+      y: player.y,
+    };
+    const topRight = {
+      x: player.x - player.regX + player.hitbox.x + player.hitbox.x,
+      y: player.y,
+    };
+  }
+
   testModel() {
     console.log("Model be running");
   }
@@ -117,6 +130,27 @@ export default class Model {
       this.player.x = newPos.x;
       this.player.y = newPos.y;
     }
+  }
+
+  checkForItems() {
+    const items = this.getItemsUnderPlayer();
+    if (items.length > 0) {
+      console.log(`There are ${items.length} items under the player!`);
+    }
+  }
+
+  getItemsUnderPlayer() {
+    const items = [];
+    const coords = this.getItemsUnderPlayer(player);
+
+    for (const coord of coords) {
+      const item = this.itemsGrid[coord.row][coord.col];
+
+      if (item !== 0) {
+        items.push(item);
+      }
+    }
+    return items;
   }
 
   canMoveTo(pos) {
