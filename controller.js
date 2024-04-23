@@ -151,7 +151,7 @@ class Controller {
 
     this.lastPlayerCoords = tileCoords;
 
-    // this.lastPlayerCoord = coord;
+    this.lastPlayerCoord = coord;
   }
 
   //Red outline

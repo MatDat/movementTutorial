@@ -81,26 +81,25 @@ export default class Model {
     return this.tiles[row][col];
   }
 
-  getTilesUnderPlayer(player, newPos = { x: player.x, y: player.y }) {
+  getTilesUnderPlayer(newPos = { x: this.player.x, y: this.player.y }) {
     const tileCoords = [];
-
-    const topLeft = this.coordFromPos({
-      x: newPos.x - player.regX + player.hitbox.x,
-      y: newPos.y - player.regY + player.hitbox.y,
-    });
-
-    const topRight = {
-      x: newPos.x - player.regX + player.hitbox.x + player.hitbox.x,
-      y: newPos.y - player.regY + player.hitbox.x,
+    const topLeft = {
+      x: newPos.x - this.player.regX + this.player.hitbox.x,
+      y: newPos.y - this.player.regY + this.player.hitbox.y,
     };
+    const topRight = { x: topLeft.x + this.player.hitbox.w, y: topLeft.y };
+    const bottomLeft = { x: topLeft.x, y: topLeft.y + this.player.hitbox.h };
+    const bottomRight = { x: topRight.x, y: bottomLeft.y };
 
-    // const bottomLeft = { x: , y };
-    // const bottomRight = { x, y };
-
+    const topLeftCoords = this.coordFromPos(topLeft);
     const topRightCoords = this.coordFromPos(topRight);
+    const bottomLeftCoords = this.coordFromPos(bottomLeft);
+    const bottomRightCoords = this.coordFromPos(bottomRight);
 
-    tileCoords.push(topLeft);
+    tileCoords.push(topLeftCoords);
     tileCoords.push(topRightCoords);
+    tileCoords.push(bottomLeftCoords);
+    tileCoords.push(bottomRightCoords);
 
     return tileCoords;
   }
@@ -183,12 +182,6 @@ export default class Model {
     }
   }
 
-  canMovePlayerToPos(player, pos) {
-    const coords = this.getItemsUnderPlayer(player, pos);
-
-    return coords.every(this.canMoveTo);
-  }
-
   canMoveTo({ row, col }) {
     // const { row, col } = this.coordFromPos(pos);
 
@@ -219,5 +212,18 @@ export default class Model {
         break;
     }
     return true;
+  }
+
+  canMovePlayerToPos(newPos) {
+    const coords = this.getTilesUnderPlayer(newPos);
+
+    let canMove = true;
+
+    for (let i = 0; i < coords.length; i++) {
+      if (!this.canMoveTo(coords[i])) {
+        canMove = false;
+      }
+    }
+    return canMove;
   }
 }
