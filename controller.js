@@ -42,11 +42,14 @@ class Controller {
       this.model.GRID_HEIGHT,
       this.model.GRID_WIDTH
     );
+
     this.view.displayTiles(
       this.model.tiles,
       this.model.GRID_HEIGHT,
       this.model.GRID_WIDTH
     );
+
+    this.model.checkForItems();
   }
 
   lastTimeStamp = 0;
@@ -60,7 +63,7 @@ class Controller {
 
     this.model.movePlayer(deltaTime);
 
-    // this.model.checkFortems();
+    this.model.checkForItems();
 
     this.updatePlayerPosition(this.model.player);
     this.view.displayPlayerAnimation(this.model.player);
@@ -71,19 +74,24 @@ class Controller {
   keyDown = (event) => {
     switch (event.key) {
       case "ArrowLeft":
+      case "a":
         this.controls.left = true;
         break;
       case "ArrowRight":
+      case "d":
         this.controls.right = true;
         break;
       case "ArrowUp":
+      case "w":
         this.controls.up = true;
         break;
       case "ArrowDown":
+      case "s":
         this.controls.down = true;
         break;
       case "e":
         this.controls.use = true;
+        console.log("E Clicked");
         break;
     }
   };
@@ -91,15 +99,19 @@ class Controller {
   keyUp = (event) => {
     switch (event.key) {
       case "ArrowLeft":
+      case "a":
         this.controls.left = false;
         break;
       case "ArrowRight":
+      case "d":
         this.controls.right = false;
         break;
       case "ArrowUp":
+      case "w":
         this.controls.up = false;
         break;
       case "ArrowDown":
+      case "s":
         this.controls.down = false;
         break;
       case "e":
@@ -144,14 +156,14 @@ class Controller {
 
   //Yellow outline
   showDebugTileUnderPlayer() {
-    this.lastPlayerCoords.forEach(this.unhighlightTile);
+    this.lastPlayerCoords.forEach((coord) => this.unhighlightTile(coord));
 
     const tileCoords = this.model.getTilesUnderPlayer(this.model.player);
-    tileCoords.forEach(this.highlightTile);
+    tileCoords.forEach((coord) => this.highlightTile(coord));
 
     this.lastPlayerCoords = tileCoords;
 
-    this.lastPlayerCoord = coord;
+    // this.lastPlayerCoord = coord;
   }
 
   //Red outline

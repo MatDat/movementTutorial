@@ -139,7 +139,7 @@ export default class Model {
       newPos.y += this.player.speed * deltaTime;
     }
 
-    if (this.canMovePlayerToPos()) {
+    if (this.canMovePlayerToPos(newPos)) {
       this.player.x = newPos.x;
       this.player.y = newPos.y;
     }
@@ -147,38 +147,50 @@ export default class Model {
 
   checkForItems() {
     const items = this.getItemsUnderPlayer();
-    if (items.length > 0 && this.controls.use && !this.player.isTaking) {
+    if (
+      items.length > 0 &&
+      this.controller.controls.use &&
+      !this.player.isTaking
+    ) {
       this.player.isTaking = true;
-      items.forEach(this.takeItem);
+      items.forEach(this.takeItem, this);
+    }
+    if (this.player.isTaking && !this.controller.controls.use) {
+      this.player.isTaking = false;
     }
   }
 
   getItemsUnderPlayer() {
     const items = [];
-    const coords = this.getItemsUnderPlayer(player);
+    const playerCoords = this.coordFromPos(this.player); // Get coordinates of player
 
-    for (const coord of coords) {
-      const item = this.itemsGrid[coord.row][coord.col];
-
-      if (item !== 0) {
-        items.push(item);
+    // Check if player coordinates are within grid bounds
+    if (
+      playerCoords.row >= 0 &&
+      playerCoords.row < this.GRID_HEIGHT &&
+      playerCoords.col >= 0 &&
+      playerCoords.col < this.GRID_WIDTH
+    ) {
+      const itemValue = this.itemsGrid[playerCoords.row][playerCoords.col];
+      if (itemValue !== 0) {
+        items.push({ row: playerCoords.row, col: playerCoords.col });
       }
     }
+
     return items;
   }
 
   takeItem(coords) {
-    //Find item
-    const itemValue = this.itemsGrid[coords.row][coords.col];
-    //Continue only if there is an item
-    if (itemValue !== 0) {
-      //remove item
-      this.itemsGrid[coords.row][coords.col] = 0;
-      //Find visual item
-      const visualItem = this.visualItemsGriditemsGrid[coords.row][coords.col];
+    console.log("Attempting to take item at coordinates:", coords);
+    console.log("Items grid:", this.itemsGrid);
 
+    const itemValue = this.itemsGrid[coords.row][coords.col];
+    console.log("Item value:", itemValue);
+
+    if (itemValue !== 0) {
+      this.itemsGrid[coords.row][coords.col] = 0;
+      const visualItem = this.visualItemsGrid[coords.row][coords.col];
       visualItem.classList.add("take");
-      // document.querySelector("#sound_coins").play();
     }
   }
 
